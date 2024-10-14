@@ -1,0 +1,17 @@
+apiVersion: sources.knative.dev/v1beta1
+kind: KafkaSource
+metadata:
+  name: mykafka-source
+spec:
+  consumerGroup: knative-group
+  bootstrapServers:
+    - kafka-controller-0.kafka-controller-headless.kafka.svc.cluster.local:9092
+    - kafka-controller-1.kafka-controller-headless.kafka.svc.cluster.local:9092
+    - kafka-controller-2.kafka-controller-headless.kafka.svc.cluster.local:9092
+  topics:
+    - demo
+  sink:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: flask-demo-ws

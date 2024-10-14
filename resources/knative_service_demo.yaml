@@ -1,0 +1,19 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: flask-demo-ws
+spec:
+  template:
+    metadata:
+      name: flask-demo-ws-v2
+      annotations:
+        autoscaling.knative.dev/target: "1"
+    spec:
+      containers:
+        - image: m1koto/knative_demo:v2
+          name: knative-flask-demo
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MOCK_URL
+              value: "https://knative-demo.free.beeceptor.com"

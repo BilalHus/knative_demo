@@ -1,3 +1,7 @@
+import json
+import os
+
+import requests
 from flask import Flask, request
 
 from cloudevents.http import from_http
@@ -12,6 +16,17 @@ def home():
         f"Found {event['id']} from {event['source']} with type "
         f"{event['type']} and specversion {event['specversion']}"
     )
+
+    url = os.getenv("MOCK_URL")
+    body = {"key": event['id']}
+
+
+    response = requests.post(url,
+                             data=json.dumps(body),
+                             headers={"Content-Type": "application/json"})
+
+    print(f"Status Code: {response.status_code}")
+    print(f"Response: {response.text}")
 
     return "", 204
 
